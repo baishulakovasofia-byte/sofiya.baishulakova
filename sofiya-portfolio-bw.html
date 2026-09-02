@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sofiya Baishulakova</title>
+<meta name="description" content="Sofiya Baishulakova — journalist and photographer. Medill School of Journalism, Northwestern University in Qatar.">
+
+<!--
+================================================================
+  SOFIYA BAISHULAKOVA — PORTFOLIO
+  One file. No build tools. Open in a browser to preview,
+  upload anywhere (GitHub Pages / Netlify Drop) to publish.
+================================================================
+
+  HOW THE PAGES WORK
+  This is a one-page file that behaves like a multi-page site.
+  Each "page" is a <section class="page" id="page-name">.
+  The nav links use #photography, #journalism, etc.
+  Nothing else to configure — it just works.
+
+  THINGS YOU'LL WANT TO EDIT (search for these markers)
+    [EDIT: LINKS]      → your LinkedIn / Handshake / YouTube URLs
+    [EDIT: PHOTOS]     → the photo grid
+    [EDIT: JOURNALISM] → your 5 project entries
+    [EDIT: NAV]        → adding a new page + dropdown item
+
+  ABOUT THE PHOTOS
+  Right now the grid pulls images from your Crevado site so you
+  can see it working immediately. BEFORE YOU PUBLISH: download
+  those photos, put them in a folder called "images" next to
+  this file, and change each src to "images/your-file.jpg".
+  That way your site doesn't depend on Crevado staying online.
+================================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   1. TOKENS — strictly black, white, and greys
+   ============================================================ */
+:root{
+  --black:      #000000;
+  --near-black: #141414;
+  --grey-dark:  #6E6E6E;
+  --grey-mid:   #A8A8A8;
+  --grey-line:  #DCDCDC;
+  --grey-bg:    #F4F4F4;
+  --white:      #FFFFFF;
+
+  --serif: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --sans:  'Archivo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif;
+
+  --max: 1180px;
+  --gutter: 32px;
+  --nav-h: 68px;
+}
+
+*{ box-sizing: border-box; }
+html{ -webkit-text-size-adjust: 100%; }
+body{
+  margin:0;
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+img{ display:block; max-width:100%; }
+a{ color: inherit; }
+h1,h2,h3{ margin:0; font-weight:400; }
+
+:focus-visible{ outline: 2px solid var(--black); outline-offset: 3px; }
+
+.wrap{ max-width: var(--max); margin:0 auto; padding: 0 var(--gutter); }
+
+.skip{
+  position:absolute; left:-9999px; top:0; background: var(--black); color: var(--white);
+  padding: 10px 16px; z-index: 999; font-size: 0.9rem;
+}
+.skip:focus{ left: 16px; top: 16px; }
+
+/* ============================================================
+   2. NAV  — [EDIT: NAV]
+   ============================================================ */
+.nav{
+  position: sticky; top:0; z-index: 90;
+  background: rgba(255,255,255,0.94);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--grey-line);
+}
+.nav-inner{
+  height: var(--nav-h);
+  max-width: var(--max); margin:0 auto; padding: 0 var(--gutter);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.wordmark{
+  font-family: var(--serif); font-size: 1.22rem; font-weight: 400;
+  letter-spacing: 0.005em; text-decoration:none; white-space: nowrap;
+}
+
+.menu{ display:flex; align-items:center; gap: 34px; list-style:none; margin:0; padding:0; }
+.menu > li{ position: relative; }
+
+.menu a, .menu button.drop-btn{
+  font-family: var(--sans); font-size: 0.88rem; font-weight: 400;
+  color: var(--near-black); text-decoration:none;
+  background:none; border:none; padding: 6px 0; cursor: pointer;
+  display:inline-flex; align-items:center; gap: 7px;
+  position: relative;
+}
+/* Hairline that draws in on hover — the one bit of motion in the nav */
+.menu a::after, .menu button.drop-btn::after{
+  content:""; position:absolute; left:0; bottom:0; height:1px;
+  width:0; background: var(--black); transition: width .22s ease;
+}
+.menu a:hover::after, .menu button.drop-btn:hover::after,
+.menu li.is-active > a::after, .menu li.is-active > .drop-btn::after{ width:100%; }
+
+.caret{ width:7px; height:7px; border-right:1px solid var(--near-black); border-bottom:1px solid var(--near-black);
+  transform: rotate(45deg) translate(-1px,-1px); transition: transform .2s ease; }
+.drop.open .caret{ transform: rotate(-135deg) translate(-2px,-2px); }
+
+/* ---- dropdown panel ---- */
+.drop-panel{
+  position:absolute; top: calc(100% + 14px); left: -18px;
+  min-width: 216px; background: var(--white);
+  border: 1px solid var(--grey-line);
+  list-style:none; margin:0; padding: 6px;
+  opacity:0; visibility:hidden; transform: translateY(-6px);
+  transition: opacity .18s ease, transform .18s ease, visibility .18s;
+}
+.drop.open .drop-panel{ opacity:1; visibility:visible; transform:none; }
+.drop-panel li + li{ border-top: 1px solid var(--grey-line); }
+.drop-panel a{
+  display:block; padding: 11px 14px; font-size: 0.88rem; width:100%;
+}
+.drop-panel a::after{ display:none; }
+.drop-panel a:hover{ background: var(--grey-bg); }
+.drop-panel .d-sub{ display:block; font-size: 0.74rem; color: var(--grey-dark); margin-top: 1px; }
+
+.burger{
+  display:none; background:none; border:none; cursor:pointer;
+  padding: 10px; margin-right: -10px;
+}
+.burger i{ display:block; width:20px; height:1px; background: var(--black); }
+.burger i + i{ margin-top: 5px; }
+
+/* ============================================================
+   3. PAGE ROUTER
+   ============================================================ */
+.page{ display:none; }
+.page.active{ display:block; animation: fade .3s ease; }
+@keyframes fade{ from{ opacity:0; } to{ opacity:1; } }
+@media (prefers-reduced-motion: reduce){ .page.active{ animation:none; } }
+
+/* ============================================================
+   4. SHARED PIECES
+   ============================================================ */
+.page-head{ padding: 84px 0 46px; border-bottom: 1px solid var(--grey-line); }
+.page-head h1{
+  font-family: var(--serif); font-size: clamp(2.1rem, 3.4vw, 3.1rem);
+  font-weight: 300; line-height: 1.08; letter-spacing: -0.01em;
+}
+.page-head p{
+  margin: 18px 0 0; max-width: 58ch; color: var(--grey-dark); font-size: 1rem;
+}
+
+.section{ padding: 76px 0; border-bottom: 1px solid var(--grey-line); }
+.section:last-of-type{ border-bottom:none; }
+.section h2{
+  font-family: var(--serif); font-size: clamp(1.5rem, 2.2vw, 2rem);
+  font-weight: 400; margin-bottom: 30px;
+}
+
+.text-col p{ max-width: 66ch; font-size: 1.03rem; line-height: 1.8; margin: 0 0 20px; }
+.text-col p:last-child{ margin-bottom:0; }
+
+/* underlined inline links */
+.ul-link{
+  text-decoration: none; border-bottom: 1px solid var(--grey-mid);
+  padding-bottom: 1px; transition: border-color .2s ease;
+}
+.ul-link:hover{ border-color: var(--black); }
+
+/* ============================================================
+   5. HOME — the one-pager
+   ============================================================ */
+.hero{ padding: 110px 0 90px; }
+.hero h1{
+  font-family: var(--serif); font-weight: 300;
+  font-size: clamp(2.6rem, 6.4vw, 5rem); line-height: 1.02;
+  letter-spacing: -0.02em; max-width: 15ch;
+}
+.hero .lede{
+  margin: 34px 0 0; max-width: 46ch; font-size: clamp(1rem, 1.2vw, 1.14rem);
+  color: var(--near-black); line-height: 1.7;
+}
+.hero .meta{
+  margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--grey-line);
+  display:flex; gap: 46px; flex-wrap: wrap; font-size: 0.86rem; color: var(--grey-dark);
+}
+
+/* preview strip of photos on the home page */
+.strip{ display:grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.strip img{ width:100%; aspect-ratio: 1/1; object-fit: cover; background: var(--grey-bg); }
+@media (max-width: 760px){ .strip{ grid-template-columns: repeat(2, 1fr); } }
+
+.more-line{
+  margin-top: 28px; display:flex; justify-content:flex-end;
+}
+
+/* ============================================================
+   6. PHOTO GRID + LIGHTBOX — [EDIT: PHOTOS]
+   ============================================================ */
+.grid{ columns: 3; column-gap: 18px; padding: 46px 0 76px; }
+@media (max-width: 900px){ .grid{ columns: 2; } }
+@media (max-width: 560px){ .grid{ columns: 1; } }
+
+.shot{
+  break-inside: avoid; margin: 0 0 18px; padding:0; border:none; background:none;
+  display:block; width:100%; cursor: zoom-in; position:relative;
+}
+.shot img{ width:100%; background: var(--grey-bg); transition: opacity .25s ease; }
+.shot:hover img{ opacity: 0.78; }
+
+.lightbox{
+  position: fixed; inset:0; z-index: 200; background: rgba(0,0,0,0.95);
+  display:none; align-items:center; justify-content:center;
+}
+.lightbox.open{ display:flex; }
+.lightbox img{
+  max-width: 92vw; max-height: 86vh; object-fit: contain;
+}
+.lb-btn{
+  position:absolute; background:none; border:none; color: var(--white);
+  font-family: var(--sans); font-size: 1.6rem; line-height:1; cursor:pointer;
+  padding: 16px; opacity: 0.65; transition: opacity .2s ease;
+}
+.lb-btn:hover{ opacity:1; }
+.lb-close{ top: 10px; right: 14px; font-size: 1.9rem; }
+.lb-prev{ left: 6px; top: 50%; transform: translateY(-50%); }
+.lb-next{ right: 6px; top: 50%; transform: translateY(-50%); }
+.lb-count{
+  position:absolute; bottom: 18px; left:50%; transform:translateX(-50%);
+  color: var(--grey-mid); font-size: 0.8rem;
+}
+
+/* ============================================================
+   7. JOURNALISM LIST — [EDIT: JOURNALISM]
+   ============================================================ */
+.works{ list-style:none; margin:0; padding: 0 0 30px; }
+.work{ border-bottom: 1px solid var(--grey-line); }
+.work-btn{
+  width:100%; background:none; border:none; cursor:pointer; text-align:left;
+  display:grid; grid-template-columns: 46px 1fr 26px; gap: 18px; align-items:start;
+  padding: 30px 0; font-family: var(--sans); color: var(--black);
+}
+.work-num{ font-size: 0.82rem; color: var(--grey-mid); padding-top: 7px; }
+.work-title{
+  font-family: var(--serif); font-size: clamp(1.2rem, 2vw, 1.6rem); font-weight: 400;
+  line-height: 1.25;
+}
+.work-kind{ font-size: 0.8rem; color: var(--grey-dark); margin-top: 6px; }
+.work-sign{ position:relative; width: 13px; height: 13px; margin-top: 12px; justify-self:end; }
+.work-sign::before, .work-sign::after{
+  content:""; position:absolute; background: var(--black); transition: transform .25s ease;
+}
+.work-sign::before{ left:0; top:6px; width:13px; height:1px; }
+.work-sign::after{ left:6px; top:0; width:1px; height:13px; }
+.work.open .work-sign::after{ transform: scaleY(0); }
+
+.work-body{
+  display:grid; grid-template-rows: 0fr; transition: grid-template-rows .3s ease;
+}
+.work.open .work-body{ grid-template-rows: 1fr; }
+.work-body > div{ overflow:hidden; }
+.work-inner{
+  padding: 0 0 32px 64px; max-width: 68ch;
+}
+.work-inner p{ margin: 0 0 18px; color: var(--near-black); }
+.work-inner .go{
+  display:inline-block; font-size: 0.88rem; text-decoration:none;
+  border-bottom: 1px solid var(--black); padding-bottom: 2px;
+}
+@media (max-width: 620px){
+  .work-btn{ grid-template-columns: 30px 1fr 20px; gap: 12px; }
+  .work-inner{ padding-left: 42px; }
+}
+@media (prefers-reduced-motion: reduce){
+  .work-body{ transition:none; }
+}
+
+/* ============================================================
+   8. CV PAGE
+   ============================================================ */
+.cv-row{
+  display:grid; grid-template-columns: 190px 1fr; gap: 34px;
+  padding: 30px 0; border-bottom: 1px solid var(--grey-line);
+}
+.cv-row:first-of-type{ border-top: 1px solid var(--grey-line); }
+.cv-date{ font-size: 0.85rem; color: var(--grey-dark); padding-top: 5px; }
+.cv-role{ font-family: var(--serif); font-size: 1.22rem; }
+.cv-org{ font-size: 0.9rem; color: var(--grey-dark); margin: 3px 0 14px; }
+.cv-list{ margin:0; padding-left: 17px; }
+.cv-list li{ margin-bottom: 7px; font-size: 0.97rem; }
+@media (max-width: 700px){
+  .cv-row{ grid-template-columns: 1fr; gap: 8px; }
+}
+
+.awards{ list-style:none; margin:0; padding:0; }
+.awards li{
+  padding: 15px 0; border-bottom: 1px solid var(--grey-line);
+  display:flex; justify-content:space-between; gap: 20px; flex-wrap:wrap;
+}
+.awards .a-when{ font-size: 0.84rem; color: var(--grey-dark); }
+
+.skill-cols{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+.skill-cols h3{ font-family: var(--serif); font-size: 1.1rem; margin-bottom: 14px; }
+.skill-cols ul{ list-style:none; margin:0; padding:0; }
+.skill-cols li{
+  font-size: 0.94rem; color: var(--near-black); padding: 7px 0;
+  border-bottom: 1px solid var(--grey-line);
+}
+@media (max-width: 760px){ .skill-cols{ grid-template-columns: 1fr; gap: 30px; } }
+
+/* ============================================================
+   9. CONTACT + FOOTER — [EDIT: LINKS]
+   ============================================================ */
+.contact-rows{ list-style:none; margin: 0; padding:0; max-width: 720px; }
+.contact-rows li{ border-bottom: 1px solid var(--grey-line); }
+.contact-rows li:first-child{ border-top: 1px solid var(--grey-line); }
+.contact-rows a, .contact-rows span.row{
+  display:flex; justify-content:space-between; align-items:center; gap: 18px;
+  padding: 20px 2px; text-decoration:none; font-size: 1rem;
+}
+.contact-rows .c-key{ font-size: 0.82rem; color: var(--grey-dark); flex: 0 0 auto; }
+.contact-rows a .c-val{ border-bottom: 1px solid transparent; transition: border-color .2s ease; }
+.contact-rows a:hover .c-val{ border-color: var(--black); }
+
+.foot{
+  padding: 34px 0 46px; border-top: 1px solid var(--grey-line);
+  display:flex; justify-content:space-between; gap: 14px; flex-wrap:wrap;
+  font-size: 0.8rem; color: var(--grey-dark);
+}
+
+/* ============================================================
+   10. MOBILE NAV
+   ============================================================ */
+@media (max-width: 860px){
+  .burger{ display:block; }
+  .menu{
+    position: fixed; left:0; right:0; top: var(--nav-h); bottom:0;
+    background: var(--white); flex-direction: column; align-items: stretch;
+    gap:0; padding: 8px var(--gutter) 40px; overflow-y: auto;
+    transform: translateY(-8px); opacity:0; pointer-events:none;
+    transition: opacity .2s ease, transform .2s ease;
+  }
+  .menu.open{ opacity:1; transform:none; pointer-events:auto; }
+  .menu > li{ border-bottom: 1px solid var(--grey-line); }
+  .menu a, .menu button.drop-btn{
+    padding: 17px 0; font-size: 1rem; width:100%; justify-content: space-between;
+  }
+  .menu a::after, .menu button.drop-btn::after{ display:none; }
+  .drop-panel{
+    position: static; opacity:1; visibility:visible; transform:none;
+    border:none; padding: 0 0 10px 0; min-width:0;
+    display:none;
+  }
+  .drop.open .drop-panel{ display:block; }
+  .drop-panel li + li{ border-top:none; }
+  .drop-panel a{ padding: 11px 0 11px 16px; color: var(--grey-dark); }
+  .drop-panel a:hover{ background:none; color: var(--black); }
+  .hero{ padding: 70px 0 60px; }
+  .page-head{ padding: 56px 0 34px; }
+  .section{ padding: 54px 0; }
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ==================== NAV ==================== -->
+<header class="nav">
+  <div class="nav-inner">
+    <a class="wordmark" href="#home">Sofiya Baishulakova</a>
+
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu">
+      <i></i><i></i><i></i>
+    </button>
+
+    <!-- [EDIT: NAV] To add a page: add a link here, then copy a
+         <section class="page" id="..."> block below with the same id. -->
+    <ul class="menu" id="menu">
+      <li data-page="home"><a href="#home">Home</a></li>
+
+      <li class="drop" data-page="photography journalism">
+        <button class="drop-btn" aria-expanded="false" aria-haspopup="true">
+          Work <span class="caret" aria-hidden="true"></span>
+        </button>
+        <ul class="drop-panel">
+          <li><a href="#photography">Photography<span class="d-sub">Stills and reportage</span></a></li>
+          <li><a href="#journalism">Journalism projects<span class="d-sub">Reporting, video, film</span></a></li>
+        </ul>
+      </li>
+
+      <li class="drop" data-page="about cv">
+        <button class="drop-btn" aria-expanded="false" aria-haspopup="true">
+          About <span class="caret" aria-hidden="true"></span>
+        </button>
+        <ul class="drop-panel">
+          <li><a href="#about">Biography</a></li>
+          <li><a href="#cv">Full CV<span class="d-sub">Experience, awards, skills</span></a></li>
+        </ul>
+      </li>
+
+      <li data-page="contact"><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============================================================
+     PAGE: HOME (the one-pager)
+     ============================================================ -->
+<section class="page" id="home">
+
+  <div class="hero wrap">
+    <h1>Journalist, photographer, and video producer.</h1>
+    <p class="lede">Studying journalism at the Medill School of Journalism, Northwestern University in Qatar. Reporting and producing between Doha and Kazakhstan — from national broadcast news to documentary shorts and stills.</p>
+    <div class="meta">
+      <span>Doha, Qatar</span>
+      <span>Medill, NU-Q — Class of 2028</span>
+      <span>Available for freelance and internships</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="wrap">
+      <h2>Photography</h2>
+      <div class="strip">
+        <img src="https://cdn.crevado.com/artists/1567486/artwork/19837014_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy">
+        <img src="https://cdn.crevado.com/artists/1567486/artwork/19837002_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy">
+        <img src="https://cdn.crevado.com/artists/1567486/artwork/19836994_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy">
+        <img src="https://cdn.crevado.com/artists/1567486/artwork/19836990_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy">
+      </div>
+      <div class="more-line"><a class="ul-link" href="#photography">See all photography</a></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="wrap">
+      <h2>Selected journalism</h2>
+      <div class="text-col">
+        <p>A profile of a finance professional building a fashion brand for the Arab diaspora. A multimedia report on VPN access in Qatar. A news package on online fraud in Doha. A short film, and a video explainer on Nauryz.</p>
+      </div>
+      <div class="more-line"><a class="ul-link" href="#journalism">Read the full list</a></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="wrap">
+      <h2>Currently</h2>
+      <div class="text-col">
+        <p>Social Media &amp; Content Manager at Aman Clinic, a pediatric rehabilitation center in Kazakhstan, where she writes healthcare content with medical specialists and produces short-form video. Previously an editorial and media production intern at KazMedia Center, cutting segments for the national channel Khabar.</p>
+      </div>
+      <div class="more-line"><a class="ul-link" href="#cv">Full CV</a></div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     PAGE: PHOTOGRAPHY   [EDIT: PHOTOS]
+     To add a photo, copy one <button class="shot"> block.
+     To remove one, delete its block.
+     ============================================================ -->
+<section class="page" id="photography">
+  <div class="page-head wrap">
+    <h1>Photography</h1>
+    <p>Stills from reportage, events, and personal work.</p>
+  </div>
+  <div class="wrap">
+    <div class="grid" id="photoGrid">
+
+      <button class="shot"><img src="https://cdn.crevado.com/artists/1567486/artwork/19837014_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy"></button>
+      <button class="shot"><img src="https://cdn.crevado.com/artists/1567486/artwork/19837002_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy"></button>
+      <button class="shot"><img src="https://cdn.crevado.com/artists/1567486/artwork/19836994_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy"></button>
+      <button class="shot"><img src="https://cdn.crevado.com/artists/1567486/artwork/19836990_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy"></button>
+      <button class="shot"><img src="https://cdn.crevado.com/artists/1567486/artwork/19836946_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy"></button>
+      <button class="shot"><img src="https://cdn.crevado.com/artists/1567486/artwork/19836938_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy"></button>
+      <button class="shot"><img src="https://cdn.crevado.com/artists/1567486/artwork/19836934_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy"></button>
+      <button class="shot"><img src="https://cdn.crevado.com/artists/1567486/artwork/19836930_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy"></button>
+      <button class="shot"><img src="https://cdn.crevado.com/artists/1567486/artwork/18530426_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy"></button>
+      <button class="shot"><img src="https://cdn.crevado.com/artists/1567486/artwork/17916574_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy"></button>
+      <button class="shot"><img src="https://cdn.crevado.com/artists/1567486/artwork/17916570_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy"></button>
+      <button class="shot"><img src="https://cdn.crevado.com/artists/1567486/artwork/17916566_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy"></button>
+      <button class="shot"><img src="https://cdn.crevado.com/artists/1567486/artwork/17916558_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy"></button>
+      <button class="shot"><img src="https://cdn.crevado.com/artists/1567486/artwork/17916550_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy"></button>
+      <button class="shot"><img src="https://cdn.crevado.com/artists/1567486/artwork/17916546_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy"></button>
+      <button class="shot"><img src="https://cdn.crevado.com/artists/1567486/artwork/17916542_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy"></button>
+      <button class="shot"><img src="https://cdn.crevado.com/artists/1567486/artwork/17916394_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy"></button>
+      <button class="shot"><img src="https://cdn.crevado.com/artists/1567486/artwork/17916378_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy"></button>
+      <button class="shot"><img src="https://cdn.crevado.com/artists/1567486/artwork/17916370_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy"></button>
+      <button class="shot"><img src="https://cdn.crevado.com/artists/1567486/artwork/17916362_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy"></button>
+      <button class="shot"><img src="https://cdn.crevado.com/artists/1567486/artwork/17916342_xxl-1.jpg" alt="Photograph by Sofiya Baishulakova" loading="lazy"></button>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE: JOURNALISM   [EDIT: JOURNALISM]
+     Each project is one <li class="work"> block. Click expands it.
+     ============================================================ -->
+<section class="page" id="journalism">
+  <div class="page-head wrap">
+    <h1>Journalism projects</h1>
+    <p>Selected reporting, video, and film work. Open an entry to read more.</p>
+  </div>
+  <div class="wrap">
+    <ol class="works">
+
+      <li class="work">
+        <button class="work-btn" aria-expanded="false">
+          <span class="work-num">01</span>
+          <span>
+            <span class="work-title">Profile Piece</span>
+            <span class="work-kind">Written profile</span>
+          </span>
+          <span class="work-sign" aria-hidden="true"></span>
+        </button>
+        <div class="work-body"><div><div class="work-inner">
+          <p>A profile exploring how finance professional Homaam Omar built a fashion brand that reflects Arab identity and serves the Arab diaspora.</p>
+          <a class="go" href="https://cdn.crevado.com/artists/1567486/pages/41854-1_Profile%20Piece%20Sofiya.pdf" target="_blank" rel="noopener">Read the profile (PDF)</a>
+        </div></div></div>
+      </li>
+
+      <li class="work">
+        <button class="work-btn" aria-expanded="false">
+          <span class="work-num">02</span>
+          <span>
+            <span class="work-title">VPN Access in Qatar</span>
+            <span class="work-kind">Multimedia news report</span>
+          </span>
+          <span class="work-sign" aria-hidden="true"></span>
+        </button>
+        <div class="work-body"><div><div class="work-inner">
+          <p>A multimedia news report on VPN access in Qatar.</p>
+          <a class="go" href="https://youtu.be/lM27dEAhH6M" target="_blank" rel="noopener">Watch on YouTube</a>
+        </div></div></div>
+      </li>
+
+      <li class="work">
+        <button class="work-btn" aria-expanded="false">
+          <span class="work-num">03</span>
+          <span>
+            <span class="work-title">The Rising Issue of Online Fraud in Doha</span>
+            <span class="work-kind">News package</span>
+          </span>
+          <span class="work-sign" aria-hidden="true"></span>
+        </button>
+        <div class="work-body"><div><div class="work-inner">
+          <p>A news package reporting on the growth of online fraud in Doha.</p>
+          <a class="go" href="https://drive.google.com/file/d/1xQ6sMJdsxRlPVzqXUW33-U8hG49rRq9d/view?usp=drive_link" target="_blank" rel="noopener">Watch the package</a>
+        </div></div></div>
+      </li>
+
+      <li class="work">
+        <button class="work-btn" aria-expanded="false">
+          <span class="work-num">04</span>
+          <span>
+            <span class="work-title">20 Candles</span>
+            <span class="work-kind">Short film</span>
+          </span>
+          <span class="work-sign" aria-hidden="true"></span>
+        </button>
+        <div class="work-body"><div><div class="work-inner">
+          <p>A short film.</p>
+          <a class="go" href="https://youtu.be/WfoafTUf7cU" target="_blank" rel="noopener">Watch on YouTube</a>
+        </div></div></div>
+      </li>
+
+      <li class="work">
+        <button class="work-btn" aria-expanded="false">
+          <span class="work-num">05</span>
+          <span>
+            <span class="work-title">Nauryz</span>
+            <span class="work-kind">Video explainer</span>
+          </span>
+          <span class="work-sign" aria-hidden="true"></span>
+        </button>
+        <div class="work-body"><div><div class="work-inner">
+          <p>A video explainer on Nauryz.</p>
+          <a class="go" href="https://drive.google.com/file/d/1-7UjqASKXqsLPNPKpzHLGopFMChnsI7j/view?usp=sharing" target="_blank" rel="noopener">Watch the explainer</a>
+        </div></div></div>
+      </li>
+
+    </ol>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE: ABOUT
+     ============================================================ -->
+<section class="page" id="about">
+  <div class="page-head wrap">
+    <h1>About</h1>
+  </div>
+  <div class="section">
+    <div class="wrap text-col">
+      <p>Sofiya Baishulakova is a journalism student at the Medill School of Journalism, Northwestern University in Qatar, majoring in Journalism, Media and Integrated Marketing Communications with minors in AI &amp; Media and Strategic Communication.</p>
+      <p>Her work began in a national newsroom in Kazakhstan, cutting raw footage into broadcast segments for the Khabar television channel. Since then she has produced healthcare content for a pediatric rehabilitation clinic, covered events in Almaty, and reported and filmed across campus and student media in Doha. She works in Adobe Creative Cloud and DaVinci Resolve, and moves between reporting, filming, and editing on the same story.</p>
+      <p>She holds a 3.8 GPA and has been named to the Dean's List in both her first and second years. She is the founder and lead organizer of EduHACK, a student initiative that has run more than 15 campaigns and 25 workshops for over 100 students.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE: CV
+     ============================================================ -->
+<section class="page" id="cv">
+  <div class="page-head wrap">
+    <h1>Curriculum vitae</h1>
+    <p>Journalism, Media and Integrated Marketing Communications — Medill School of Journalism, Northwestern University in Qatar. Expected graduation May 2028. Cumulative GPA 3.8/4.0.</p>
+  </div>
+
+  <div class="section">
+    <div class="wrap">
+      <h2>Experience</h2>
+
+      <div class="cv-row">
+        <div class="cv-date">June – July 2025</div>
+        <div>
+          <div class="cv-role">Editorial &amp; Media Production Intern</div>
+          <div class="cv-org">KazMedia Center, Astana, Kazakhstan</div>
+          <ul class="cv-list">
+            <li>Edited raw news footage into broadcast-ready segments for the Khabar national television channel.</li>
+            <li>Reviewed and organized raw video material, selecting footage and assembling visual sequences for news stories.</li>
+            <li>Assisted with post-production of daily news content under editorial deadlines.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="cv-row">
+        <div class="cv-date">August 2025 – May 2026</div>
+        <div>
+          <div class="cv-role">Teaching Assistant</div>
+          <div class="cv-org">Northwestern University in Qatar</div>
+          <ul class="cv-list">
+            <li>Supported course delivery by organizing lecture slides, tracking attendance, and compiling grades.</li>
+            <li>Managed student communication and scheduled office hours.</li>
+            <li>Created handouts and course materials using Microsoft Office and Canva.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="cv-row">
+        <div class="cv-date">February 2026 – present</div>
+        <div>
+          <div class="cv-role">Social Media &amp; Content Manager</div>
+          <div class="cv-org">Aman Clinic, Kazakhstan</div>
+          <ul class="cv-list">
+            <li>Manages the social media presence of a pediatric rehabilitation center, working directly with medical specialists to develop accurate healthcare content.</li>
+            <li>Writes and edits educational posts about rehabilitation programs, specialists, and services.</li>
+            <li>Films, produces, and edits short-form video — expert interviews, educational material, and promotional storytelling.</li>
+            <li>Maintains the clinic's digital content strategy and visual identity across platforms.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="cv-row">
+        <div class="cv-date">March – June 2026</div>
+        <div>
+          <div class="cv-role">Communications &amp; Event Assistant</div>
+          <div class="cv-org">MegaStudio Company, Almaty, Kazakhstan</div>
+          <ul class="cv-list">
+            <li>Managed event coordination, schedules, guest invitations, and project timelines.</li>
+            <li>Developed event concepts and programs, coordinating logistics from planning through execution.</li>
+            <li>Collaborated with the internal team and outside vendors to deliver events.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="wrap">
+      <h2>Leadership and awards</h2>
+      <ul class="awards">
+        <li><span>Dean's List, Northwestern University</span><span class="a-when">First and second year, 2024–2026</span></li>
+        <li><span>Undergraduate Language Grant recipient</span><span class="a-when">Northwestern University in Qatar</span></li>
+        <li><span>Summer Internship Grant Program award recipient</span><span class="a-when">Northwestern University in Qatar</span></li>
+        <li><span>Founder and lead organizer, EduHACK</span><span class="a-when">15+ campaigns, 25+ workshops, 100+ students</span></li>
+        <li><span>Full scholarship, Multimedia &amp; Technology Program</span><span class="a-when">The Stanford Daily Pre-College, 2024</span></li>
+        <li><span>Finalist, AMICIF</span><span class="a-when">Lions Clubs International Francophone Program, 2025</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="wrap">
+      <h2>Skills</h2>
+      <div class="skill-cols">
+        <div>
+          <h3>Reporting</h3>
+          <ul>
+            <li>News gathering</li>
+            <li>Editorial research</li>
+            <li>Interviewing</li>
+            <li>Reporting and writing</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Production</h3>
+          <ul>
+            <li>Adobe Creative Cloud</li>
+            <li>DaVinci Resolve</li>
+            <li>Video production</li>
+            <li>Photography</li>
+            <li>Microsoft Office Suite</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Platforms</h3>
+          <ul>
+            <li>Instagram</li>
+            <li>TikTok</li>
+            <li>YouTube</li>
+            <li>Social media storytelling</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE: CONTACT   [EDIT: LINKS]
+     Replace the "#" placeholders with your real profile URLs.
+     ============================================================ -->
+<section class="page" id="contact">
+  <div class="page-head wrap">
+    <h1>Contact</h1>
+    <p>For commissions, collaborations, and internship enquiries.</p>
+  </div>
+  <div class="section">
+    <div class="wrap">
+      <ul class="contact-rows">
+        <li><a href="mailto:sofiyabaishulakova2028@u.northwestern.edu"><span class="c-key">Email</span><span class="c-val">sofiyabaishulakova2028@u.northwestern.edu</span></a></li>
+        <li><a href="tel:+97431493953"><span class="c-key">Phone</span><span class="c-val">+974 314 93 953</span></a></li>
+        <li><a href="#" target="_blank" rel="noopener"><span class="c-key">LinkedIn</span><span class="c-val">Add your URL</span></a></li>
+        <li><a href="#" target="_blank" rel="noopener"><span class="c-key">Handshake</span><span class="c-val">Add your URL</span></a></li>
+        <li><a href="#" target="_blank" rel="noopener"><span class="c-key">YouTube</span><span class="c-val">Add your URL</span></a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot wrap">
+  <span>Sofiya Baishulakova</span>
+  <span>Medill School of Journalism, Northwestern University in Qatar</span>
+</footer>
+
+<!-- lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photograph viewer">
+  <button class="lb-btn lb-close" id="lbClose" aria-label="Close">&times;</button>
+  <button class="lb-btn lb-prev" id="lbPrev" aria-label="Previous photograph">&#8249;</button>
+  <img id="lbImg" src="" alt="">
+  <button class="lb-btn lb-next" id="lbNext" aria-label="Next photograph">&#8250;</button>
+  <span class="lb-count" id="lbCount"></span>
+</div>
+
+<script>
+/* ============================================================
+   ROUTER — shows one .page at a time based on the URL hash
+   ============================================================ */
+(function(){
+  var pages = document.querySelectorAll('.page');
+  var menuItems = document.querySelectorAll('.menu > li');
+
+  function show(id){
+    var found = false;
+    pages.forEach(function(p){
+      var on = (p.id === id);
+      p.classList.toggle('active', on);
+      if(on) found = true;
+    });
+    if(!found){
+      document.getElementById('home').classList.add('active');
+      id = 'home';
+    }
+    menuItems.forEach(function(li){
+      var owns = (li.dataset.page || '').split(' ').indexOf(id) > -1;
+      li.classList.toggle('is-active', owns);
+    });
+    window.scrollTo(0, 0);
+  }
+
+  function route(){
+    show((location.hash || '#home').replace('#',''));
+    closeAll();
+  }
+  window.addEventListener('hashchange', route);
+
+  /* ==========================================================
+     DROPDOWNS — hover on desktop, tap on mobile, keyboard-safe
+     ========================================================== */
+  var drops = document.querySelectorAll('.drop');
+  var menu = document.getElementById('menu');
+  var burger = document.getElementById('burger');
+  var isMobile = function(){ return window.matchMedia('(max-width: 860px)').matches; };
+
+  function closeAll(){
+    drops.forEach(function(d){
+      d.classList.remove('open');
+      d.querySelector('.drop-btn').setAttribute('aria-expanded','false');
+    });
+    menu.classList.remove('open');
+    burger.setAttribute('aria-expanded','false');
+  }
+  window.closeAll = closeAll;
+
+  drops.forEach(function(d){
+    var btn = d.querySelector('.drop-btn');
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var wasOpen = d.classList.contains('open');
+      drops.forEach(function(o){
+        if(o !== d){ o.classList.remove('open'); o.querySelector('.drop-btn').setAttribute('aria-expanded','false'); }
+      });
+      d.classList.toggle('open', !wasOpen);
+      btn.setAttribute('aria-expanded', String(!wasOpen));
+    });
+    d.addEventListener('mouseenter', function(){
+      if(!isMobile()){ d.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
+    });
+    d.addEventListener('mouseleave', function(){
+      if(!isMobile()){ d.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
+    });
+  });
+
+  document.addEventListener('click', function(e){
+    if(!e.target.closest('.menu') && !e.target.closest('#burger')) closeAll();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeAll();
+  });
+
+  burger.addEventListener('click', function(e){
+    e.stopPropagation();
+    var open = menu.classList.toggle('open');
+    burger.setAttribute('aria-expanded', String(open));
+  });
+
+  // Close the mobile menu when a link is tapped, even if the hash doesn't change
+  menu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ setTimeout(closeAll, 0); });
+  });
+
+  route(); // initial page
+})();
+
+/* ============================================================
+   JOURNALISM ACCORDIONS
+   ============================================================ */
+document.querySelectorAll('.work-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var li = btn.closest('.work');
+    var open = li.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(open));
+  });
+});
+
+/* ============================================================
+   PHOTO LIGHTBOX
+   ============================================================ */
+(function(){
+  var shots = Array.prototype.slice.call(document.querySelectorAll('#photoGrid .shot img'));
+  var box = document.getElementById('lightbox');
+  var img = document.getElementById('lbImg');
+  var count = document.getElementById('lbCount');
+  var i = 0;
+
+  function open(n){
+    i = (n + shots.length) % shots.length;
+    img.src = shots[i].src;
+    img.alt = shots[i].alt;
+    count.textContent = (i+1) + ' / ' + shots.length;
+    box.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function close(){
+    box.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  shots.forEach(function(s, n){
+    s.parentElement.addEventListener('click', function(){ open(n); });
+  });
+  document.getElementById('lbClose').addEventListener('click', close);
+  document.getElementById('lbPrev').addEventListener('click', function(e){ e.stopPropagation(); open(i-1); });
+  document.getElementById('lbNext').addEventListener('click', function(e){ e.stopPropagation(); open(i+1); });
+  box.addEventListener('click', function(e){ if(e.target === box) close(); });
+  document.addEventListener('keydown', function(e){
+    if(!box.classList.contains('open')) return;
+    if(e.key === 'Escape') close();
+    if(e.key === 'ArrowLeft') open(i-1);
+    if(e.key === 'ArrowRight') open(i+1);
+  });
+})();
+
+/* ============================================================
+   IMAGE FALLBACK — if a full-size photo is missing, try the
+   thumbnail version instead so the grid never shows a broken box.
+   (You can delete this once you host your own images.)
+   ============================================================ */
+document.querySelectorAll('img').forEach(function(im){
+  im.addEventListener('error', function(){
+    if(im.src.indexOf('_xxl-1.jpg') > -1){
+      im.src = im.src.replace('_xxl-1.jpg', '_thumb-1.jpg');
+    }
+  });
+});
+</script>
+
+</body>
+</html>
