@@ -191,6 +191,9 @@ h1,h2,h3{ margin:0; font-weight:400; }
    5. HOME — the one-pager
    ============================================================ */
 .hero{ padding: 110px 0 90px; }
+.hero-grid{
+  display:grid; grid-template-columns: 1.3fr 0.8fr; gap: 64px; align-items:center;
+}
 .hero h1{
   font-family: var(--serif); font-weight: 300;
   font-size: clamp(2.6rem, 6.4vw, 5rem); line-height: 1.02;
@@ -203,6 +206,15 @@ h1,h2,h3{ margin:0; font-weight:400; }
 .hero .meta{
   margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--grey-line);
   display:flex; gap: 46px; flex-wrap: wrap; font-size: 0.86rem; color: var(--grey-dark);
+}
+.hero-photo{
+  width:100%; aspect-ratio: 3/4; object-fit: cover;
+  filter: grayscale(100%) contrast(1.02);
+  background: var(--grey-bg);
+}
+@media (max-width: 860px){
+  .hero-grid{ grid-template-columns: 1fr; gap: 40px; }
+  .hero-photo{ max-width: 280px; aspect-ratio: 3/4; order:-1; }
 }
 
 /* preview strip of photos on the home page */
@@ -432,12 +444,17 @@ h1,h2,h3{ margin:0; font-weight:400; }
 <section class="page" id="home">
 
   <div class="hero wrap">
-    <h1>Journalist, photographer, and video producer.</h1>
-    <p class="lede">Studying journalism at the Medill School of Journalism, Northwestern University in Qatar. Reporting and producing between Doha and Kazakhstan — from national broadcast news to documentary shorts and stills.</p>
-    <div class="meta">
-      <span>Doha, Qatar</span>
-      <span>Medill, NU-Q — Class of 2028</span>
-      <span>Available for freelance and internships</span>
+    <div class="hero-grid">
+      <div>
+        <h1>Journalist, photographer, and video producer.</h1>
+        <p class="lede">Studying journalism at the Medill School of Journalism, Northwestern University in Qatar. Reporting and producing between Doha and Kazakhstan — from national broadcast news to documentary shorts and stills.</p>
+        <div class="meta">
+          <span>Doha, Qatar</span>
+          <span>Medill, NU-Q — Class of 2028</span>
+          <span>Available for freelance and internships</span>
+        </div>
+      </div>
+      <img class="hero-photo" src="images/sofiya-headshot.jpg" alt="Portrait of Sofiya Baishulakova">
     </div>
   </div>
 
